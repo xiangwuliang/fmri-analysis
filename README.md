@@ -22,6 +22,7 @@
  ### 4.浏览器访问
     http://127.0.0.1:5000/upload
  ### 5.上传fMRI图片点击分析
+ <img width="240" src="./temporary/WX20240312-011320%402x.png">
   
 ## 生产部署 TODO
 
