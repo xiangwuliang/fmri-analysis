@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>fMRI Image Upload and Analysis</title>
+    <style>
+        #image-container, #image-result {
+            display: inline-block;
+            width: 400px; /* Set the fixed width for the image container */
+            height: auto; /* Allow the height to adjust proportionally */
+            margin-top: 20px;
+        }
+        #uploaded-image {
+            max-width: 100%; /* Ensure the image fits within the container */
+            max-height: 100%; /* Ensure the image fits within the container */
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload and Analyze fMRI Image</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*">
+        <button type="submit">Upload & Analyze</button>
+    </form>
+    <div id="image-container">
+        <img id="uploaded-image" src="#" alt="Uploaded Image">
+    </div>
+    <div id= "image-result"></div>
+
+    <script>
+         const form = document.querySelector('form');
+        const imageContainer = document.getElementById('image-container');
+        const uploadedImage = document.getElementById('uploaded-image');
+        form.addEventListener('change', () => {
+            const file = form.elements['file'].files[0];
+            const reader = new FileReader();
+            reader.onload = () => {
+                uploadedImage.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+    
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/fmri/analysis', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+            document.getElementById('image-result').innerHTML = `<div>${result}</div>`;
+        });
+    </script>
+</body>
+</html>
