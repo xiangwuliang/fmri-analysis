@@ -48,8 +48,15 @@
                 method: 'POST',
                 body: formData
             });
-            const result = await response.text();
-            document.getElementById('image-result').innerHTML = `<div>${result}</div>`;
+            {#const result = await response.text();#}
+            {#document.getElementById('image-result').innerHTML = `<div>${result}</div>`;#}
+            const result = await response.json();  // 解析 JSON 而不是文本
+            let resultHtml = '';
+            result.volumes.forEach((item, index) => {
+            resultHtml += `<div>结节 ${index + 1} 的体积为：${item.volume} 立方毫米</div>`;
+         });
+            resultHtml += `<div>总结节体积为：${result.total_volume} 立方毫米</div>`;
+            document.getElementById('image-result').innerHTML = resultHtml;
         });
     </script>
 </body>
