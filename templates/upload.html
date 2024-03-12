@@ -19,7 +19,7 @@
 <body>
     <h1>Upload and Analyze fMRI Image</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*">
+        <input type="file" name="file" accept=".nil, application/gzip">
         <button type="submit">Upload & Analyze</button>
     </form>
     <div id="image-container">
