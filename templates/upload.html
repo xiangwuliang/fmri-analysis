@@ -31,13 +31,16 @@
          const form = document.querySelector('form');
         const imageContainer = document.getElementById('image-container');
         const uploadedImage = document.getElementById('uploaded-image');
-        form.addEventListener('change', () => {
-            const file = form.elements['file'].files[0];
-            const reader = new FileReader();
-            reader.onload = () => {
-                uploadedImage.src = reader.result;
-            };
-            reader.readAsDataURL(file);
+        form.addEventListener('change', async() => {
+           
+            const formData = new FormData(form);
+            const response = await fetch('/fmri/convert2pic', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.text();
+            console.log(result)
+            uploadedImage.src = `data:image/png;base64,${result}`;
         });
 
     

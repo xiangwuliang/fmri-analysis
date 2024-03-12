@@ -3,6 +3,7 @@ import logging
 import SimpleITK as sitk
 import numpy as np
 import os
+import base64
 
 app = Flask(__name__)
 
@@ -12,6 +13,22 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 @app.route('/upload')
 def template():
     return render_template('upload.html')
+
+@app.route('/fmri/convert2pic', methods = ['POST'])
+def convert2pic():
+    f = request.files["file"]
+    file_name = f.filename
+    temp_path = f"temporary/{file_name}"
+    f.save(temp_path)
+    ##TODO convert nil_image to pic 
+
+    ## 获取 pic的bytes字节流，转化为base64字符串，前端展示
+    with open('temporary/WechatIMG15.jpg', 'rb') as file:
+        file_bytes = file.read()
+    base64_data = base64.b64encode(file_bytes).decode('utf-8')
+     # 清理临时文件
+    os.remove(temp_path)
+    return base64_data
 
 ## submit the fmri, and render the analysis result
 @app.route('/fmri/analysis', methods= ['POST'])
